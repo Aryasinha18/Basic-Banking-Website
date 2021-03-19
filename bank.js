@@ -145,7 +145,6 @@ app.post("/money-transfer",function(req,res){
 
      });
 
-   });
 
    Customer.findOne({name: Receiver}, function(err, receive){
      num2 = receive.currentBalance;
@@ -163,6 +162,8 @@ app.post("/money-transfer",function(req,res){
    res.redirect("/money-transfer");
    }
 
+
+});
 
 });
 
