@@ -1,0 +1,66 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Basic Banking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+
+
+
+    <div class = "pt-4 pb-4 pl-4 pr-4">
+
+    <div class="card pt-4 pb-4 pl-4 pr-4 container alert alert-success">
+      <h5 class="card-header bg-dark text-white">For Money Transfer</h5>
+      <div class="card-body">
+        <form  action="/money-transfer" method="post">
+        <div class="row pt-4 pb-4 pl-4 pr-4">
+          <div class="col mt-1">
+            <input type="text" class="form-control" name="sender" placeholder="Sender">
+          </div>
+          <div class="col mt-1">
+            <input type="text" class="form-control" name = "receiver" placeholder="Receiver">
+          </div>
+          <div class="col mt-1">
+            <input type="text" class="form-control" name = "money" placeholder="amount">
+          </div>
+        </div>
+        <div class="mx-auto  pb-4 pl-4 pr-4" style="width: 200px;">
+          <button type="submit" name = "customers" class="btn btn-secondary btn-lg">    Confirm</button>
+      </div>
+      <div class="mx-auto  pl-4 pr-4" style="width: 200px;">
+        <a href="http://localhost:3000" class="btn btn-secondary " role="button">Home page</a>
+    </div>
+      </form>
+      </div>
+    </div>
+    </div>
+
+<div class="pt-4 pb-4 pl-4 pr-4">
+  <span class="border border-5">
+    <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Current Balance</th>
+        </tr>
+      </thead>
+      <%  newListItems.forEach(function(item){ %>
+        <tbody>
+          <tr>
+            <td><%=  item.name  %> </td>
+            <td> <%=  item.email  %> </td>
+            <td> <%=  item.currentBalance  %> </td>
+           </tr>
+          </tbody>
+      <%  })  %>
+
+
+    </table>
+    </span>
+   </div>
+
+
+  </body>
+</html>

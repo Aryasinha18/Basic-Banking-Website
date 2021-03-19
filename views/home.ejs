@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  margin-right: 150px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+body {
+  margin-top: 50px;
+ margin-bottom: 50px;
+ margin-right: 50px;
+ margin-left: 50px;
+
+  }
+</style>
+</head>
+<body>
+<h1 class="text-center">Welcome to Our Bank</h1>
+
+<figure class="text-center">
+  <blockquote class="blockquote">
+    <p>Everyday is a bank account, and time is our currency</p>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Christopher Rice <cite title="Source Title"></cite>
+  </figcaption>
+</figure>
+
+<div class="card w-50 container border border-success border-primary alert alert-success">
+  <div class="card-body">
+    <h5 class="card-header bg-dark text-white">Transfer Money</h5>
+    <p class="card-text"></p>
+    <a href="http://localhost:3000/money-transfer" class="btn btn-secondary " role="button">Click Here!</a>
+  </div>
+</div>
+
+<div class="pt-4 pb-4 pl-4 pr-4">
+  <span class="border border-5">
+    <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th scope="col"><h3>Customer's Name</h3></th>
+        </tr>
+      </thead>
+      <%  newPeople.forEach(function(item){ %>
+        <tbody>
+          <tr>
+            <td>
+            <button type="button" class="collapsible"> <%= item.name %> </button>
+            <div class="content">
+              <p>
+                E-mail:-<%= item.email %> <br>
+                Balance:-<%= item.currentBalance %><br>
+              </p>
+            </div>
+
+           </td>
+           </tr>
+          </tbody>
+      <%  })  %>
+    </table>
+    </span>
+   </div>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
