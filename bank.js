@@ -131,31 +131,39 @@ app.post("/money-transfer",function(req,res){
  Customer.findOne({name: Sender}, function(err, send){
    num1 = send.currentBalance;
 
-   num1 = parseInt(num1) - parseInt(amount);
+   if(amount > num1){
+     alert("Not Enough Amount.");
+     res.redirect("/money-transfer");
+   }
+   else{
+     num1 = parseInt(num1) - parseInt(amount);
 
-   Customer.updateOne({name: Sender}, {
-     $set: {currentBalance: num1}}, function(err, res) {
-     if (err) throw err;
-     console.log("Sender document updated");
+     Customer.updateOne({name: Sender}, {
+       $set: {currentBalance: num1}}, function(err, res) {
+       if (err) throw err;
+       console.log("Sender document updated");
 
-   });
-
- });
-
- Customer.findOne({name: Receiver}, function(err, receive){
-   num2 = receive.currentBalance;
-
-   num2 = parseInt(num2) + parseInt(amount);
-
-   Customer.updateOne({name: Receiver}, {
-     $set: {currentBalance: num2}}, function(err, res) {
-     if (err) throw err;
-     console.log("Receiver document updated");
+     });
 
    });
 
- });
- res.redirect("/money-transfer");
+   Customer.findOne({name: Receiver}, function(err, receive){
+     num2 = receive.currentBalance;
+
+     num2 = parseInt(num2) + parseInt(amount);
+
+     Customer.updateOne({name: Receiver}, {
+       $set: {currentBalance: num2}}, function(err, res) {
+       if (err) throw err;
+       console.log("Receiver document updated");
+
+     });
+
+   });
+   res.redirect("/money-transfer");
+   }
+
+
 });
 
 let port = process.env.PORT;
