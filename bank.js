@@ -1,9 +1,16 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+
+const alert = require('alert');
+
+
+
 require('mongoose-type-email');
 
 const app = express();
+
+app.use(express.static(__dirname+"/public"));
 
 app.set('view engine', 'ejs');
 
@@ -83,6 +90,7 @@ const cust10 = new Customer({
 console.log("Hey!");
 
 const defaultItems = [cust1,cust2,cust3,cust4,cust5,cust6,cust7,cust8,cust9,cust10];
+let foundItems = " ";
 
 app.get("/money-transfer",function(req,res){
   Customer.find({}, function(err, foundItems){
@@ -98,13 +106,13 @@ app.get("/money-transfer",function(req,res){
       res.redirect("/money-transfer");
     }
      else{
-       res.render("customers", { newListItems: foundItems});
+       res.render("customers", { newListItems: foundItems, danger: "", danger2: ""});
      }
   });
 
 });
 
-app.get("/",function(req,res){
+app.get("/view",function(req,res){
   Customer.find({},function(err, people){
     if(err){
       console.log(err);
@@ -124,16 +132,22 @@ app.post("/money-transfer",function(req,res){
   const Sender = req.body.sender;
   const Receiver = req.body.receiver;
 
+
   let num1 = 0;
   let num2 = 0;
-  console.log("hey!");
-
  Customer.findOne({name: Sender}, function(err, send){
    num1 = send.currentBalance;
 
    if(amount > num1){
-     alert("Not Enough Amount.");
-     res.redirect("/money-transfer");
+     Customer.find({}, function(err, again){
+        res.render("customers", { newListItems: again, danger: " Not enough money in sender's account",danger2: ""});
+     });
+   }
+
+   else if (Sender == Receiver) {
+     Customer.find({}, function(err, again){
+        res.render("customers", { newListItems: again, danger: "",danger2: "Sender and Receiver can't be same. Please re-enter."});
+     });
    }
    else{
      num1 = parseInt(num1) - parseInt(amount);
@@ -142,7 +156,6 @@ app.post("/money-transfer",function(req,res){
        $set: {currentBalance: num1}}, function(err, res) {
        if (err) throw err;
        console.log("Sender document updated");
-
      });
 
 
@@ -155,16 +168,23 @@ app.post("/money-transfer",function(req,res){
        $set: {currentBalance: num2}}, function(err, res) {
        if (err) throw err;
        console.log("Receiver document updated");
-
      });
 
    });
-   res.redirect("/money-transfer");
+   res.render("success",{sender: Sender, receiver: Receiver});
+   //res.redirect("/money-transfer");
    }
-
+});
 
 });
 
+app.get("/",function(req,res){
+  res.sendFile(__dirname+"/index.html");
+});
+
+
+app.get("/about",function(req,res){
+res.sendFile(__dirname+"/about.html");
 });
 
 let port = process.env.PORT;

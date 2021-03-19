@@ -1,9 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Add a gray background color and some padding to the footer */
+  footer {
+    background-color: #f2f2f2;
+    padding: 25px;
+  }
+
+.carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    min-height:200px;
+}
+
+/* Hide the carousel text when the screen is less than 600 pixels wide */
+@media (max-width: 600px) {
+  .carousel-caption {
+    display: none;
+  }
+}
+
+
+* {
+box-sizing: border-box;
+}
+
+body, html {
+height: 100%;
+margin: 0;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+box-sizing: border-box;
+}
+
+
 .collapsible {
   background-color: #777;
   color: white;
@@ -23,46 +66,70 @@
 
 .content {
   padding: 0 18px;
+  margin-top: 20px;
   display: none;
   overflow: hidden;
   background-color: #f1f1f1;
 }
 
+.white{
+  color: white;
+}
+
 body {
-  margin-top: 50px;
+  margin-top: 0px;
  margin-bottom: 50px;
  margin-right: 50px;
  margin-left: 50px;
+ background-image: url('https://cdn.wallpapersafari.com/93/56/nlz0kt.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 
   }
 </style>
 </head>
 <body>
-<h1 class="text-center">Welcome to Our Bank</h1>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <img class = "navbar-brand" src="images/bank-logo.png" alt="logo">
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li ><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li class="active"><a href="/view">View</a></li>
+          <li><a href="/money-transfer">Transfer</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<h1 class="text-center white ">Welcome to Our Bank</h1>
 
 <figure class="text-center">
-  <blockquote class="blockquote">
-    <p>Everyday is a bank account, and time is our currency</p>
-  </blockquote>
-  <figcaption class="blockquote-footer">
-    Christopher Rice <cite title="Source Title"></cite>
+   <br>
+  <h4><p class = "white"> Everyday is a bank account, and time is our currency</p></h4>
+  <figcaption class="blockquote-footer white h5">
+    Christopher Rice
   </figcaption>
 </figure>
-
-<div class="card w-50 container border border-success border-primary alert alert-success">
-  <div class="card-body">
-    <h5 class="card-header bg-dark text-white">Transfer Money</h5>
-    <p class="card-text"></p>
-    <a href="https://powerful-refuge-21495.herokuapp.com/money-transfer" class="btn btn-secondary " role="button">Click Here!</a>
-  </div>
-</div>
 
 <div class="pt-4 pb-4 pl-4 pr-4">
   <span class="border border-5">
     <table class="table table-success table-striped">
       <thead>
         <tr>
-          <th scope="col"><h3>Customer's Name</h3></th>
+          <th scope="col" class = "white"><h3>
+            Customer Details
+            <small class="text-muted h6 white">Click to expand</small>
+          </h3></th>
         </tr>
       </thead>
       <%  newPeople.forEach(function(item){ %>
@@ -85,7 +152,8 @@ body {
     </span>
    </div>
 
-
+<br>
+<br>
 
 <script>
 var coll = document.getElementsByClassName("collapsible");
@@ -103,6 +171,7 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 </script>
+
 
 </body>
 </html>

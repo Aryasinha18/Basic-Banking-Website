@@ -2,43 +2,137 @@
   <head>
     <meta charset="utf-8">
     <title>Basic Banking</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+
+.navbar {
+  margin-bottom: 0;
+  width: 100%;
+  border-radius: 0;
+}
+
+.white{
+  color: white;
+}
+
+@media (max-width: 600px) {
+.carousel-caption {
+  display: none;
+}
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+table{
+  width: 50%;
+}
+
+tbody{
+  font-size: 0.75em;
+}
+    body {
+      margin-top: 0px;
+     margin-bottom: 50px;
+     margin-right: 50px;
+     margin-left: 50px;
+     background-image: url('https://cdn.wallpapersafari.com/93/56/nlz0kt.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+
+      }
+    </style>
   </head>
   <body>
 
-
-
-    <div class = "pt-4 pb-4 pl-4 pr-4">
-
-    <div class="card pt-4 pb-4 pl-4 pr-4 container alert alert-success">
-      <h5 class="card-header bg-dark text-white">For Money Transfer</h5>
-      <div class="card-body">
-        <form  action="/money-transfer" method="post">
-        <div class="row pt-4 pb-4 pl-4 pr-4">
-          <div class="col mt-1">
-            <input type="text" class="form-control" name="sender" placeholder="Sender">
-          </div>
-          <div class="col mt-1">
-            <input type="text" class="form-control" name = "receiver" placeholder="Receiver">
-          </div>
-          <div class="col mt-1">
-            <input type="text" class="form-control" name = "money" placeholder="amount">
-          </div>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <img class = "navbar-brand" src="images/bank-logo.png" alt="logo">
         </div>
-        <div class="mx-auto  pb-4 pl-4 pr-4" style="width: 200px;">
-          <button type="submit" name = "customers" class="btn btn-secondary btn-lg">    Confirm</button>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li ><a href="/">Home</a></li>
+            <li ><a href="/about">About</a></li>
+            <li><a href="/view">View</a></li>
+            <li class="active"><a href="/money-transfer">Transfer</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="mx-auto  pl-4 pr-4" style="width: 200px;">
-        <a href="https://powerful-refuge-21495.herokuapp.com" class="btn btn-secondary " role="button">Home page</a>
-    </div>
-      </form>
-      </div>
-    </div>
-    </div>
+    </nav>
+
+
+    <div class = "center">
+    <div class="card white w-50" style="width: 40rem";>
+     <br>
+     <h4 class="card-header">Money Transfer</h4>
+     <div class="card-body">
+       <div class="card-body">
+         <form  action="/money-transfer" method="post">
+         <div class=" form-group">
+           <div class="col xs-9">
+             <label for="sender" class="col-xs-3 control-label white">Sender</label>
+             <input list="senders" class=" form-control" name="sender" >
+              <datalist id="senders">
+                <%  newListItems.forEach(function(item){ %>
+                  <option value="<%=item.name%>"></option>
+                 <%  })  %>
+              </datalist>
+           </div>
+           <div class="col xs-9">
+               <label for="receiver" class="col-xs-3 control-label white">Receiver</label>
+             <input list="receivers" class="form-control" name = "receiver">
+             <datalist id= "receivers">
+              <%  newListItems.forEach(function(item){ %>
+                <option value="<%=item.name%>"></option>
+
+               <%  })  %>
+             </datalist>
+           </div>
+           <div class="col xs-9">
+             <label for="amount" class="col-xs-3 control-label white">Amount</label>
+             <input type="text" class="form-control" name = "money">
+           </div>
+         </div>
+         <div class="mx-auto  pb-4 pl-4 pr-4" style="width: 200px;">
+           <button type="submit" name = "customers" class="btn-primary active btn-lg"> Confirm</button>
+       </div>
+       </form>
+       </div>
+     </div>
+   </div>
+ </div>
+
+<% if(danger != ''){%>
+  <div class="alert alert-danger">
+  <strong> <%=danger%> </strong>
+</div>
+<%}%>
+
+<% if(danger2 != ''){%>
+  <div class="alert alert-danger">
+  <strong><%=danger2%></strong>
+</div>
+<%}%>
+
+<br>
 
 <div class="pt-4 pb-4 pl-4 pr-4">
   <span class="border border-5">
-    <table class="table table-success table-striped">
+    <table class="table table-hover" style = "background-color: #777; ">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -60,6 +154,7 @@
     </table>
     </span>
    </div>
+
 
 
   </body>
