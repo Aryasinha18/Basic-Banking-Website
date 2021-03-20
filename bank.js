@@ -10,12 +10,17 @@ require('mongoose-type-email');
 
 const app = express();
 
-app.use(express.static(__dirname+"/public"));
+app.use(express.static(__dirname + "/public"));
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
-mongoose.connect("mongodb+srv://arya-admin:test123@cluster0.e002p.mongodb.net/customerDB", {useNewUrlParser: true, useUnifiedTopology: true});
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+mongoose.connect("mongodb+srv://arya-admin:test123@cluster0.e002p.mongodb.net/customerDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const Customer = mongoose.model('Customer', {
   name: String,
@@ -87,104 +92,128 @@ const cust10 = new Customer({
   currentBalance: 97000
 });
 
-console.log("Hey!");
 
-const defaultItems = [cust1,cust2,cust3,cust4,cust5,cust6,cust7,cust8,cust9,cust10];
+const defaultItems = [cust1, cust2, cust3, cust4, cust5, cust6, cust7, cust8, cust9, cust10];
 let foundItems = " ";
 
-app.get("/money-transfer",function(req,res){
-  Customer.find({}, function(err, foundItems){
-    if(foundItems.length == 0){
-      Customer.insertMany(defaultItems,function(err){
-        if(err){
+app.get("/money-transfer", function(req, res) {
+  Customer.find({}, function(err, foundItems) {
+    if (foundItems.length == 0) {
+      Customer.insertMany(defaultItems, function(err) {
+        if (err) {
           console.log(err);
-        }
-        else{
+        } else {
           console.log("Successfully Inserted default items");
         }
       });
       res.redirect("/money-transfer");
+    } else {
+      res.render("customers", {
+        newListItems: foundItems,
+        danger: "",
+        danger2: ""
+      });
     }
-     else{
-       res.render("customers", { newListItems: foundItems, danger: "", danger2: ""});
-     }
   });
 
 });
 
-app.get("/view",function(req,res){
-  Customer.find({},function(err, people){
-    if(err){
+app.get("/view", function(req, res) {
+  Customer.find({}, function(err, people) {
+    if (err) {
       console.log(err);
-    }
-
-    else{
-      res.render("home", { newPeople: people});
+    } else {
+      res.render("home", {
+        newPeople: people
+      });
     }
   });
 });
 
 
 
-app.post("/money-transfer",function(req,res){
-  // res.redirect("/");
-  const amount = req.body.money;
-  const Sender = req.body.sender;
-  const Receiver = req.body.receiver;
+app.post("/money-transfer", function(req, res) {
+// res.redirect("/");
+const amount = req.body.money;
+const Sender = req.body.sender;
+const Receiver = req.body.receiver;
 
 
-  let num1 = 0;
-  let num2 = 0;
- Customer.findOne({name: Sender}, function(err, send){
-   num1 = send.currentBalance;
+let num1 = 0;
+let num2 = 0;
+Customer.findOne({
+    name: Sender
+  }, function(err, send) {
+    num1 = send.currentBalance;
 
-   if(amount > num1){
-     Customer.find({}, function(err, again){
-        res.render("customers", { newListItems: again, danger: " Not enough money in sender's account",danger2: ""});
-     });
-   }
+    if (amount > num1) {
+      Customer.find({}, function(err, again) {
+        res.render("customers", {
+          newListItems: again,
+          danger: " Not enough money in sender's account",
+          danger2: ""
+        });
+      });
+    } else if (Sender == Receiver) {
+      Customer.find({}, function(err, again) {
+        res.render("customers", {
+          newListItems: again,
+          danger: "",
+          danger2: "Sender and Receiver can't be same. Please re-enter."
+        });
+      });
+    } else {
+      num1 = parseInt(num1) - parseInt(amount);
 
-   else if (Sender == Receiver) {
-     Customer.find({}, function(err, again){
-        res.render("customers", { newListItems: again, danger: "",danger2: "Sender and Receiver can't be same. Please re-enter."});
-     });
-   }
-   else{
-     num1 = parseInt(num1) - parseInt(amount);
+      Customer.updateOne({
+        name: Sender
+      }, {
+        $set: {
+          currentBalance: num1
+        }
+      }, function(err, res) {
+        if (err) throw err;
+        console.log("Sender document updated");
+      });
 
-     Customer.updateOne({name: Sender}, {
-       $set: {currentBalance: num1}}, function(err, res) {
-       if (err) throw err;
-       console.log("Sender document updated");
-     });
+      // Database interation
+      Customer.findOne({
+        name: Receiver
+      }, function(err, receive) {
+        num2 = receive.currentBalance;
 
+        num2 = parseInt(num2) + parseInt(amount);
 
-   Customer.findOne({name: Receiver}, function(err, receive){
-     num2 = receive.currentBalance;
+        Customer.updateOne({
+          name: Receiver
+        }, {
+          $set: {
+            currentBalance: num2
+          }
+        }, function(err, res) {
+          if (err) throw err;
+          console.log("Receiver account updated");
+        });
 
-     num2 = parseInt(num2) + parseInt(amount);
+      });
 
-     Customer.updateOne({name: Receiver}, {
-       $set: {currentBalance: num2}}, function(err, res) {
-       if (err) throw err;
-       console.log("Receiver document updated");
-     });
-
-   });
-   res.render("success",{sender: Sender, receiver: Receiver});
-   //res.redirect("/money-transfer");
-   }
+  res.render("success", {
+    sender: Sender,
+    receiver: Receiver
+  });
+  //res.redirect("/money-transfer");
+}
 });
 
 });
 
-app.get("/",function(req,res){
-  res.sendFile(__dirname+"/index.html");
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + "/index.html");
 });
 
 
-app.get("/about",function(req,res){
-res.sendFile(__dirname+"/about.html");
+app.get("/about", function(req, res) {
+  res.sendFile(__dirname + "/about.html");
 });
 
 let port = process.env.PORT;
@@ -193,6 +222,6 @@ if (port == null || port == "") {
 }
 
 
-app.listen(port, function(){
+app.listen(port, function() {
   console.log("Server has started Successfully!!");
 });
