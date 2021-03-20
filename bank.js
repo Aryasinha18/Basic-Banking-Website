@@ -28,6 +28,18 @@ const Customer = mongoose.model('Customer', {
   currentBalance: Number
 });
 
+const historySchema = new mongoose.Schema ({
+  senderName: String,
+  receiverName: String,
+  money: Number
+});
+
+
+const History = mongoose.model("History",historySchema);
+
+
+
+
 const cust1 = new Customer({
   name: "Arya Sinha",
   email: "iaryasinha2001@gmail.com",
@@ -130,6 +142,18 @@ app.get("/view", function(req, res) {
   });
 });
 
+app.get("/history", function(req, res) {
+  History.find({}, function(err, historyData) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("history", {
+        data: historyData
+      });
+    }
+  });
+});
+
 
 
 app.post("/money-transfer", function(req, res) {
@@ -197,11 +221,21 @@ Customer.findOne({
 
       });
 
+      const H1 = new History({
+        senderName: Sender,
+        receiverName: Receiver,
+        money: amount
+      });
+
+      H1.save();
+
   res.render("success", {
     sender: Sender,
     receiver: Receiver
   });
   //res.redirect("/money-transfer");
+
+
 }
 });
 
